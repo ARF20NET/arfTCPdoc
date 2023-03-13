@@ -1,0 +1,19 @@
+<h4 class="text-secondary">APIGetLastError() <i>function</i></h4>
+<p>The APIGetLastError() function gets the last occured error in the sockets API.</p>
+<h5 class="text-secondary">Syntax</h5>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">int arf::APIGetLastError();</pre>
+</div>
+<h5 class="text-secondary">Parameters</h5>
+<p>None.</p>
+<h5 class="text-secondary">Return value</h5>
+<p>A int describing a error, by its code. See remarks.</p>
+<h5 class="text-secondary">Remarks</h5>
+<p>This function was introduced in the release 1.3 along with linux support, because the need of having a abstraction layer of the API.
+In Windows (WinSock2) APIGetLastError() is just a wrapper of WSAGetLastError(). In Linux, it returns errno, automatically set by POSIX sockets when a error occurs.
+</p><p>Note that error codes may differ in Linux and Windows.
+See <a href="https://docs.microsoft.com/en-us/windows/win32/winsock/windows-sockets-error-codes-2">WinSock2 error codes</a>
+ and <a href="https://www-numi.fnal.gov/offline_software/srt_public_context/WebDocs/Errors/unix_system_errors.html">Unix/Linux errno codes</a>.
+<h5 class="text-secondary">Requirements</h5>
+<span>Header: arfTCP.h</span><br>
+<span>Introduced in release 1.3</span>

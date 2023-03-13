@@ -1,0 +1,34 @@
+<h4 class="text-secondary">e <i>enum type</i></h4>
+<p>The e member represents the error, by arfTCP means.</p>
+<h5 class="text-secondary">Syntax</h5>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre stype="margin: 0;" class="code">enum types {
+	// General
+	NOERROROK = 0,
+	NOTINITIALISED,
+	NETDOWN,
+	NETUNREACH,
+	NETRESET,
+	ALREDY,
+	UNKOWN,			// everything else
+	UNRECOVERABLE,		// NOBUFS, 
+	// socket create
+	NOMORESOCK,
+	// Arguments
+	INVALIDADDR,
+	NOTRESOLVED,
+	// Connection general
+	CONNABORTED,
+	CONNRESET,
+	// Connect
+	CONNREFUSED,
+	TIMEDOUT,
+	// Listen
+	ADDRINUSE,
+} e;</pre>
+</div>
+<h5 class="text-secondary">Remarks</h5>
+<p>In 1.4c NOERROROK = 0, was added, making it not backwards compatible.</p>
+<h5 class="text-secondary">Requirements</h5>
+<span>Header: arfTCP.h</span><br>
+<span>Introduced in release 1.4</span>

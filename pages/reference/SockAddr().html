@@ -1,0 +1,18 @@
+<h4 class="text-secondary">SockAddr() <i>constructor</i></h4>
+<p>The SockAddr() function creates a SockAddr object, with the specified IP address and port stored internally.</p>
+<h5 class="text-secondary">Syntax</h5>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">arf::SockAddr(sockaddr_in laddr);
+arf::SockAddr(unsigned long iaddr, unsigned short port);</pre>
+</div>
+<h5 class="text-secondary">Parameters</h5>
+<h6>laddr</h6><p>A sockaddr_in (contains IP address and port) structure to create the SockAddr from.</p>
+<h6>iaddr</h6><p>A IPv4 address in its unsigned long binary representation.</p>
+<h6>port</h6><p>A IP port in unsigned short format.</p>
+<h5 class="text-secondary">Return value</h5>
+<p>The SockAddr object.</p>
+<h5 class="text-secondary">Remarks</h5>
+<p>None.</p>
+<h5 class="text-secondary">Requirements</h5>
+<span>Header: arfTCP.h</span><br>
+<span>Introduced in release 1.0</span>

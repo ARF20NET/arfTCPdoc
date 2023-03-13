@@ -1,0 +1,18 @@
+<h4 class="text-secondary">ResolveHost() <i>function</i></h4>
+<p>The ResolveHost() function resolves a host, or a IP address onto a unsigned long address for use, via DNS request.</p>
+<h5 class="text-secondary">Syntax</h5>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">unsigned long arf::ResolveHost(const char *name, void(*errorHandler)(int));
+unsigned long arf::ResolveHost(std::string& name, void(*errorHandler)(int));</pre>
+</div>
+<h5 class="text-secondary">Parameters</h5>
+<h6>name</h6><p>A null-terminated string (a.k.a. cstring) or a std::string containing a hostname, or a IPv4 address in its text decimal dotted representation (e.g. 62.43.97.153).</p>
+<h6>errorHandler</h6><p>A pointer to a user defined error handing function which takes a int as parameter. If NULL, the error will be ignored.</p>
+<h5 class="text-secondary">Return value</h5>
+<p>The host address in unsigned long format. If error occurs, (unsigned long)0 is returned.</p>
+<h5 class="text-secondary">Remarks</h5>
+<p>This function will use the system primary DNS server to resolve the hostname.</p>
+<p>The call may fail if the DNS server times out, or the hostname doesn't exist.</p>
+<h5 class="text-secondary">Requirements</h5>
+<span>Header: arfTCP.h</span><br>
+<span>Introduced in release 1.0</span>

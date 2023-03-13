@@ -1,0 +1,20 @@
+<h4 class="text-secondary">TCPServerMulti() <i>constructor</i></h4>
+<p>The TCPServerMulti() method creates a TCPServerMulti object, initializes the socket, creates a thread to listen it, and another to recv() the clients.</p>
+<h5 class="text-secondary">Syntax</h5>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">arf::TCPServerMulti(SockAddr listenSockAddr, ARF_ACCEPT_HANDLER, ARF_RECV_HANDLER, ARF_DISCONNECT_HANDLER, ARF_ERROR_HANDLER = nullptr) noexcept(false);</pre>
+</div>
+<h5 class="text-secondary">Parameters</h5>
+<h6>listenSockAddr</h6><p>A pair of IPv4 address (listen adapter) and listen port in a SockAddr object to listen at.</p>
+<h6>acceptHandler</h6><p>The user defined function to handle accepted clients. See ARF_ACCEPT_HANDLER.</p>
+<h6>recvHandler</h6><p>The user defined function to handle received data. See ARF_RECV_HANDLER.</p>
+<h6>disconnectHandler</h6><p>The user defined disconnect and internal thread error handling function. See ARF_DISCONNECT_HANDLER</p>
+<h6>errorHandler</h6><p>The user defined error handling function. See ARF_ERROR_HANDLER.</p>
+<h5 class="text-secondary">Return value</h5>
+<p>The TCPServerMulti object.</p>
+<h5 class="text-secondary">Remarks</h5>
+<p>If a error occurs during the listen socket initialization, a exception will be raised. If a error occurs on a underlaying thread, the disconnect handler will be called with error information, without raising a expection.
+When any error occurs receiving from a client, that client's connection is terminated, and the client is deleted from the client vector.</p>
+<h5 class="text-secondary">Requirements</h5>
+<span>Header: arfTCP.h</span><br>
+<span>Introduced in release 1.2. Changed in 1.4c (no backwards compatible).</span>

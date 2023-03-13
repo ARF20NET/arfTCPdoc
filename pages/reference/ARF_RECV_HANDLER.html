@@ -1,0 +1,15 @@
+<h4 class="text-secondary">ARF_RECV_HANDLER <i>macro</i></h4>
+<p>Defines recvHandler callback function parameter.</p>
+<h5 class="text-secondary">Expands to</h5>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">std::function&lt;bool(char*, size_t)&gt; recvHandler</pre>
+</div>
+<h5 class="text-secondary">Function definition</h5>
+<h6>bool <i>Return value</i></h6><p>Return false to stop receiving clients, otherwise true.</p>
+<h6>char* <unnamed> <i>Parameter</i></h6><p>Received raw buffer.</p>
+<h6>size_t <unnamed> <i>Parameter</i></h6><p>Buffer size.</p>
+<h5 class="text-secondary">Remarks</h5>
+<p>None.</p>
+<h5 class="text-secondary">Requirements</h5>
+<span>Header: arfTCP.h</span><br>
+<span>Introduced in release 1.1.</span>

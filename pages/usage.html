@@ -1,0 +1,119 @@
+<h2 class="text-primary">arfTCP: <small><i>Usage</i></small></h2>
+<hr>
+<p>Assuming you have installed and included the header, you are now ready to use the library.</p>
+<p>Before doing anything, in any situation, you must first initialize the library, this is because how WinSock works and my implementation. Now we'll see different applications.</p>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">arf::TCPInit();</pre>
+</div>
+
+<h4 class="text-secondary">Single client server</h4>
+<p>Next, you can instantiate the TCPServer class, making sure to provide valid arguments, and after that call is completed suscesfully,
+    the socket will valid so you can perform Send() and Recv().</p>
+<p>In this example a TCP server is created on every network interface, at port 8089. You can provide SockAddr (listen address and port) or just unsigned short (listen port) as argument.
+    The second argument is a user defined error handling function, to let the user how to proceed when a error occurs, we will explain that later.
+    The call will block the program until a client attemps to connect, or a error occurs, in which case the library will call the function you passed as second argument.
+    </p>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">
+arf::TCPServer server(arf::SockAddr(INADDR_ANY, 8089), ErrorHandler);
+arf::TCPServer server(8089, ErrorHandler);</pre>
+</div>
+<p>Now, a connection is suscesfully stablished (otherwise if a error occurs the error handler should stop the execution) and you can start to send a receive data.</p>
+
+<h4 class="text-secondary">Client</h4>
+<a href="/source/arfTCP/arfTCP/examples/client.cpp">Example</a>
+<p>In the other end, instantiate TCPClient, passing the server IP address, and port. You can get a IP address for a host with arf::ResolveHost().
+    As in the server constructor you must provide a error handler.</p>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">arf::TCPClient client(arf::SockAddr(arf::ResolveHost("arf20.com", errorHandler), 8089), errorHandler);</pre>
+</div>
+<p>This call will block until sucess, or fail. Under normal circumstances this should be practically instant.</p>
+
+<h4 class="text-secondary">Simple bidirecctional I/O methods</h4>
+<p>Now that we have valid and active TCP connections, we can start to send a receive data throught the TCP stream. With Send() and Recv() methods respectively,
+    both take a pointer to a sufficiently large buffer, and the exact size as second parameter. In Send(), the data is readed from the buffer and sent over the stream, and in Recv(),
+    the program blocks until data is received, and then is written to the provided buffer. The third parameter, is as always, the error handler.</p>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">
+char *buff = new char[1024];               // Sample buffer to read/write
+
+client.Send(buff, 1024, ErrorHandler);     // Send buffer from client to server
+client.Recv(buff, 1024, ErrorHandler);     // Receive buffer to client from server
+server.Send(buff, 1024, ErrorHandler);     // Send buffer from server to client
+server.Recv(buff, 1024, ErrorHandler);     // Receive buffer to server from client</pre>
+</div>
+
+<h4 class="text-secondary">Asynchronous receive loop with callback</h4>
+<p>Introduced in 1.1, a receive loop was added. Now the user doesn't even have to implement it by itself! When data is received,
+    the user receive handler is called, with the received data provided.</p>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">
+bool RecvHandler(char *buff, size_t size); // Sample receive handler
+
+client.StartRecvLoop(RecvHandler, ErrorHandler);</pre>
+</div>
+<p>The receive loop has a default buffer size of 65535 bytes, you can override this by defining BUFFSIZE, before including arfTCP.</p>
+
+<h4 class="text-secondary">Multiclient server</h4>
+<a href="/source/arfTCP/arfTCP/examples/multiclient_server.cpp">Example</a>
+<p>The new release 1.2 has a multiclient server that fully implements a basic multiclient TCP server, including accept loop, and receive loop, in their respective asyncronous threads.
+    This way the user doesnt have to implement anything by itself. But must provide a accept handler, this handler may be empty, its purpose is to provide a way to respond to a new connection,
+    with a welcome message for example, or log it locally, etc. For that, a arf::TCPBase is provided for simple I/O methods, and the client address. The first parameter is the listening IP address and port, the second, the mentioned accept handler. The third parameter is again
+    a handler, to handle received data, the user doesn't need to Recv() by itself, just respond to received data in this handler. The client address and received data is provided to the handler.
+    The final parameter is the error handler, we'll see in the next section.
+</p>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">
+bool AcceptHandler(arf::TCPBase* io, arf::SockAddr addr); // Sample accept handler
+bool RecvHandler(char *buff, size_t size);                // Sample receive handler
+
+arf::TCPServerMulti server(arf::SockAddr(INADDR_ANY, 8089), AcceptHandler, RecvHandler, ErrorHandler);</pre>
+</div>
+
+<h4 class="text-secondary">Exception handling</h4>	
+<p>The brand new way of reporting errors introduced in 1.4. Along with 1.4 a new class <i>arf::Exception</i> was introduced, it designates a error. So the user has to wrap every call in a try-catch block, with parameter <i>arf::Exception</i>.
+Then in the catch block, the user has to handle the exception. To know what happend <i>arf::Exception</i> contains a member <i>e</i> that contains a error code, one of the listed in the <a href="http://arf20.com/arfTCPdoc/?page=reference.php&reference=e.html">reference</a>.
+This makes the user having to handle only a single set of error codes, arfTCP converts WinSock and POSIX codes to his own set.</p>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">
+try {
+	// Whatever call
+} catch (arf::Exception e) {
+	std::cout << e.ToString();			// Print string of error provided by arf::Exception
+	switch (e.e) {					// Switch error code
+	case arf::Exception::CONNABORTED: {		// Handle each error separatedly or just print the error
+		// Handle CONNABORTED
+	} break;
+	}
+}</pre>
+</div>
+
+
+<h4 class="text-secondary">Error handling (deprecated since 1.4)</h4>
+<p>The user must always handle errors. The error code depends (currently) in the underlaying API, in case of Windows, the error code correspends to WinSock2's errors,
+look them up in <a href="https://docs.microsoft.com/en-us/windows/win32/winsock/windows-sockets-error-codes-2">this table</a>. In the case of POSIX, the error code will be the generic
+Unix/Linux errno value, is not as complete as WinSock2, but still has useful information, in <a href="https://www-numi.fnal.gov/offline_software/srt_public_context/WebDocs/Errors/unix_system_errors.html">the table</a>.
+The format of the error handler callback is the next:</p>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">
+void ErrorHandler(int err) {
+	switch (err) {
+	case 10061: {
+		// Handle connection refused
+	} break;
+	}
+}
+
+[...]
+
+... ...(..., ErrorHandler);</pre>
+</div>
+<p>Several ways to do this, for example just printing the error in stdout (please dont do that in a serious application), or the better way, displaying a MessageBox (pop up error message) displaying a human readable error to the user. Other ways would fit for specific applications.
+This choose is left as an exercise for the developer.<p>
+
+
+<h4 class="text-secondary"><a href="/source/arfTCP/arfTCP/examples">Examples</a></h4>
+<ul>
+	<li><a href="/source/arfTCP/arfTCP/examples/client.cpp">Client</a></li>
+	<li><a href="/source/arfTCP/arfTCP/examples/multiclient_server.cpp">Multiclient server</a></li>
+</ul>

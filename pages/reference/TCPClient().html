@@ -1,0 +1,17 @@
+<h4 class="text-secondary">TCPClient() <i>constructor</i></h4>
+<p>The TCPClient() function creates a TCPClient object, initializes a socket, and tries to connect, blocking the current thread until connects suscesfully, of fails.
+    When that happends, the internal socket is valid, or if a error occurs, the user defined error handling function is called, and then return.</p>
+<h5 class="text-secondary">Syntax</h5>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">arf::TCPClient(arf::SockAddr peerSockAddr, void (*errorHandler)(int));</pre>
+</div>
+<h5 class="text-secondary">Parameters</h5>
+<h6>peerSockAddr</h6><p>A pair of IPv4 address (listen adapter) and listen port in a SockAddr object to connect to.</p>
+<h6>errorHandler</h6><p>The user defined error handling function.</p>
+<h5 class="text-secondary">Return value</h5>
+<p>The TCPClient object.</p>
+<h5 class="text-secondary">Remarks</h5>
+<p>When conneting under normal circunstances, the call will be almost instant. </p>
+<h5 class="text-secondary">Requirements</h5>
+<span>Header: arfTCP.h</span><br>
+<span>Introduced in release 1.0</span>

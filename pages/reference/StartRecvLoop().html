@@ -1,0 +1,19 @@
+<h4 class="text-secondary">StartRecvLoop() <i>method</i></h4>
+<p>The StartRecvLoop() method creates a asyncronous thread to continuously receives data from the stream, and calls a user defined function to handle it.
+    If a error occurs, the error handing function is called, and the thread is terminated. The user might terminate the thread by returning false from the callback.</p>
+<h5 class="text-secondary">Syntax</h5>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">void arf::TCPBase::StartRecvLoop(bool (*recvHandler)(char*, size_t), void(*errorHandler)(int));</pre>
+</div>
+<h5 class="text-secondary">Parameters</h5>
+<h6>recvHandler</h6><p>The user defined function to handle received data. It must return bool, and take a char* and a size_t.</p>
+<h6>errorHandler</h6><p>The user defined error handling function.</p>
+<h5 class="text-secondary">Return value</h5>
+<p>None.</p>
+<h5 class="text-secondary">Remarks</h5>
+<p>A thread is created and then detached, so before the program is terminated, this thread must be terminated to exit cleanly. The thread runs a infinite loop internally, and blocks until 
+    data is received, so to terminate the thread the recv call has to be canceled someway.
+</p>
+<h5 class="text-secondary">Requirements</h5>
+<span>Header: arfTCP.h</span><br>
+<span>Introduced in release 1.1</span>

@@ -1,0 +1,25 @@
+<h4 class="text-secondary">TCPServerMulti <i>class</i></h4>
+<p>The TCPServerMulti class is a implementation of a multiclient server, with a asyncronous accept loop, and receive loop.</p>
+<h5 class="text-secondary">Syntax</h5>
+<div class="p-3 mb-3 bg-dark text-white">
+    <pre style="margin: 0;" class="code">class TCPServerMulti;
+TCPServerMulti server( ... );</pre>
+</div>
+
+<h5 class="text-secondary">Members</h5>
+<ul>
+    <li><a>TCPServerMulti() <i>constructor</i></a></li>
+    <li><a>ExitThreads() <i>method</i></a></li>
+    <li><a>SendBroadcast() <i>method</i></a></li>
+    <li><a>GetClientCount() <i>method</i></a></li>
+    <li><a>GetClient() <i>method</i></a></li>
+    <li><a>GetClientAddr() <i>method</i></a></li>
+</ul>
+
+<h5 class="text-secondary">Remarks</h5>
+<p>This server crates a thread that continously listen and accept connections, and pushes them in a vector to be recv() by another thread.
+    Is a good practice to stop the thrads with ExitThreads() before destructing the object or closing the application.</p>
+
+<h5 class="text-secondary">Requirements</h5>
+<span>Header: arfTCP.h</span><br>
+<span>Introduced in release 1.2</span>
